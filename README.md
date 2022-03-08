@@ -27,4 +27,4 @@ yarn run flow init
 yarn run flow
 ```
 
-> Note: you might need to add `<PROJECT_ROOT>/node_modules/.*` under the `[ignore]` section of the `.flowconfig` file.
+> Note: you might need to add `<PROJECT_ROOT>/.history/.*` under the `[ignore]` section of the `.flowconfig` file.
