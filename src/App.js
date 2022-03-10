@@ -3,10 +3,12 @@
  * @returns
  */
 
+import TodoApp from "./components/TodoApp.react";
+
 import React from "react";
 
 function App(): React$MixedElement {
-  return <div>Hello, React Relay!</div>;
+  return <TodoApp />;
 }
 
 export default App;
