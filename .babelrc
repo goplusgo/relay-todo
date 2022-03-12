@@ -1,6 +1,8 @@
 {
   "plugins": [
-    "relay"
+    [
+      "relay"
+    ]
   ],
   "presets": ["@babel/preset-flow"]
 }

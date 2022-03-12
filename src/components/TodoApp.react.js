@@ -8,13 +8,15 @@ import { useReducer } from "react";
 
 import TodoInput from "./TodoInput.react";
 import TodoList from "./TodoList.react";
+import type { PreloadedQuery } from "react-relay/relay-hooks/EntryPointTypes.flow";
+import type { TodoAppQuery as TodoAppQueryType } from "./__generated__/TodoAppQuery.graphql";
+import graphql from "babel-plugin-relay/macro";
+import { usePreloadedQuery } from "react-relay/hooks";
 
 type TodoAction = {
   type: string,
   todo: string,
 };
-
-const initialState = ["first item", "second item", "third item"];
 
 function reducer(state: Array<string>, action: TodoAction) {
   switch (action.type) {
@@ -29,8 +31,26 @@ function reducer(state: Array<string>, action: TodoAction) {
 
 export const TodoContext: Object = React.createContext();
 
-export default function TodoApp(): React$MixedElement {
-  const [state, dispatch] = useReducer(reducer, initialState);
+type Props = {
+  queryRef: PreloadedQuery<TodoAppQueryType>,
+};
+
+export default function TodoApp(props: Props): React$MixedElement {
+  const data = usePreloadedQuery(
+    graphql`
+      query TodoAppQuery {
+        todo_list {
+          name
+        }
+      }
+    `,
+    props.queryRef
+  );
+
+  const [state, dispatch] = useReducer(
+    reducer,
+    data.todo_list.map((item) => item.name)
+  );
 
   return (
     <TodoContext.Provider value={{ state, dispatch }}>

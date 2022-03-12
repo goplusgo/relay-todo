@@ -9,15 +9,16 @@
     "express": "^4.17.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-error-boundary": "^3.1.4",
     "react-relay": "^13.1.1",
     "react-scripts": "5.0.0",
+    "relay-runtime": "^13.2.0",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "relay": "relay-compiler",
-    "test": "react-scripts test",
+    "start": "yarn run relay && react-scripts start",
+    "build": "yarn run relay && react-scripts build",
+    "relay": "yarn run relay-compiler $@",
     "eject": "react-scripts eject"
   },
   "relay": {
