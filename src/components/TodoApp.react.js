@@ -41,8 +41,19 @@ export default function TodoApp(props: Props): React$MixedElement {
     `
   );
 
+  const [commitInsert] = useMutation(
+    graphql`
+      mutation TodoAppInsertMutation($name: String!) {
+        insert_todo_list_one(object: { name: $name }) {
+          id
+          name
+        }
+      }
+    `
+  );
+
   return (
-    <TodoContext.Provider value={{ commitDelete }}>
+    <TodoContext.Provider value={{ commitDelete, commitInsert }}>
       <TodoInput />
       <TodoList todoList={data.todo_list} />
     </TodoContext.Provider>

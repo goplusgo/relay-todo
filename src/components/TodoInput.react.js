@@ -11,7 +11,7 @@ import { useContext, useRef } from "react";
 
 export default function TodoInput(): React$MixedElement {
   const inputRef = useRef(null);
-  const { dispatch } = useContext(TodoContext);
+  const { commitInsert } = useContext(TodoContext);
 
   return (
     <>
@@ -26,9 +26,8 @@ export default function TodoInput(): React$MixedElement {
         type="submit"
         onClick={() =>
           !isEmpty(inputRef.current?.value) &&
-          dispatch({
-            type: "add",
-            todo: inputRef.current?.value,
+          commitInsert({
+            variables: { name: inputRef.current?.value },
           })
         }
       >
