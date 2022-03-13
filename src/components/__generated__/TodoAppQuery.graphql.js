@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4f3bd6b2e32e32f788909ad2b4bc4e49>>
+ * @generated SignedSource<<f01861abca8570291f08f678773480db>>
  * @flow
  * @lightSyntaxTransform
  * @nogrep
@@ -14,6 +14,7 @@ import type { ConcreteRequest, Query } from 'relay-runtime';
 export type TodoAppQuery$variables = {||};
 export type TodoAppQuery$data = {|
   +todo_list: $ReadOnlyArray<{|
+    +id: any,
     +name: string,
   |}>,
 |};
@@ -33,6 +34,13 @@ var v0 = [
     "name": "todo_list",
     "plural": true,
     "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "id",
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": null,
@@ -62,17 +70,17 @@ return {
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "678bf6badc30b2b75a4a9e88bfdaaa4a",
+    "cacheID": "07459e958c819a4a8e0b2e11eaeb7854",
     "id": null,
     "metadata": {},
     "name": "TodoAppQuery",
     "operationKind": "query",
-    "text": "query TodoAppQuery {\n  todo_list {\n    name\n  }\n}\n"
+    "text": "query TodoAppQuery {\n  todo_list {\n    id\n    name\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "cce3128c8b171706fb538dc06ed92fc3";
+(node/*: any*/).hash = "c021621a46fcbc771152b7e912743f42";
 
 module.exports = ((node/*: any*/)/*: Query<
   TodoAppQuery$variables,

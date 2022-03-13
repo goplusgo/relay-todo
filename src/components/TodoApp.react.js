@@ -4,30 +4,12 @@
  */
 
 import React from "react";
-import { useReducer } from "react";
-
 import TodoInput from "./TodoInput.react";
 import TodoList from "./TodoList.react";
 import type { PreloadedQuery } from "react-relay/relay-hooks/EntryPointTypes.flow";
 import type { TodoAppQuery as TodoAppQueryType } from "./__generated__/TodoAppQuery.graphql";
 import graphql from "babel-plugin-relay/macro";
-import { usePreloadedQuery } from "react-relay/hooks";
-
-type TodoAction = {
-  type: string,
-  todo: string,
-};
-
-function reducer(state: Array<string>, action: TodoAction) {
-  switch (action.type) {
-    case "add":
-      return [...state, action.todo];
-    case "delete":
-      return state.filter((todo) => todo !== action.todo);
-    default:
-      return state;
-  }
-}
+import { useMutation, usePreloadedQuery } from "react-relay/hooks";
 
 export const TodoContext: Object = React.createContext();
 
@@ -40,6 +22,7 @@ export default function TodoApp(props: Props): React$MixedElement {
     graphql`
       query TodoAppQuery {
         todo_list {
+          id
           name
         }
       }
@@ -47,15 +30,21 @@ export default function TodoApp(props: Props): React$MixedElement {
     props.queryRef
   );
 
-  const [state, dispatch] = useReducer(
-    reducer,
-    data.todo_list.map((item) => item.name)
+  const [commitDelete] = useMutation(
+    graphql`
+      mutation TodoAppDeleteMutation($id: oid!) {
+        delete_todo_list_by_pk(id: $id) {
+          id
+          name
+        }
+      }
+    `
   );
 
   return (
-    <TodoContext.Provider value={{ state, dispatch }}>
+    <TodoContext.Provider value={{ commitDelete }}>
       <TodoInput />
-      <TodoList todoList={state} />
+      <TodoList todoList={data.todo_list} />
     </TodoContext.Provider>
   );
 }

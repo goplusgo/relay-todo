@@ -106,7 +106,7 @@ npm install -g graphqurl
 
 Step 2: Download the schema from Harusa
 ```
-gq https://my-graphql-engine.com/v1/graphql -H "X-Hasura-Admin-Secret: adminsecretkey" --introspect > ./data/schema.graphql
+gq https://ideal-vervet-75.hasura.app/v1/graphql -H "X-Hasura-Admin-Secret: adminsecretkey" --introspect > ./data/schema.graphql
 ```
 > Note: replace the `adminsecretkey` with your real secret key
 

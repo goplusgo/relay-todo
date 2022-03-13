@@ -9,18 +9,25 @@ import React from "react";
 import { useContext } from "react";
 
 type Props = {
-  todoList: Array<string>,
+  todoList: $ReadOnlyArray<{|
+    +id: string,
+    +name: string,
+  |}>,
 };
 
 export default function TodoList(props: Props): React$MixedElement {
-  const { dispatch } = useContext(TodoContext);
+  const { commitDelete } = useContext(TodoContext);
+
   const listItems = props.todoList.map((todo) => (
     <li
+      key={todo.id}
       onClick={() => {
-        dispatch({ type: "delete", todo: todo });
+        commitDelete({
+          variables: { id: todo.id },
+        });
       }}
     >
-      {todo}
+      {todo.name}
     </li>
   ));
 

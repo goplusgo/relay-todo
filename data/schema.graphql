@@ -79,7 +79,7 @@ type mutation_root {
   """
   delete single row from the table: "todo_list"
   """
-  delete_todo_list_by_pk(name: String!): todo_list
+  delete_todo_list_by_pk(id: oid!): todo_list
 
   """
   insert data into the table: "todo_list"
@@ -122,6 +122,23 @@ type mutation_root {
     _set: todo_list_set_input
     pk_columns: todo_list_pk_columns_input!
   ): todo_list
+}
+
+scalar oid
+
+"""
+Boolean expression to compare columns of type "oid". All fields are combined with logical 'AND'.
+"""
+input oid_comparison_exp {
+  _eq: oid
+  _gt: oid
+  _gte: oid
+  _in: [oid!]
+  _is_null: Boolean
+  _lt: oid
+  _lte: oid
+  _neq: oid
+  _nin: [oid!]
 }
 
 """column ordering options"""
@@ -187,7 +204,7 @@ type query_root {
   ): todo_list_aggregate!
 
   """fetch data from the table: "todo_list" using primary key columns"""
-  todo_list_by_pk(name: String!): todo_list
+  todo_list_by_pk(id: oid!): todo_list
 }
 
 type subscription_root {
@@ -232,17 +249,14 @@ type subscription_root {
   ): todo_list_aggregate!
 
   """fetch data from the table: "todo_list" using primary key columns"""
-  todo_list_by_pk(name: String!): todo_list
+  todo_list_by_pk(id: oid!): todo_list
 }
 
 """
-Todo list items
-
-
 columns and relationships of "todo_list"
-
 """
 type todo_list {
+  id: oid!
   name: String!
 }
 
@@ -270,6 +284,7 @@ input todo_list_bool_exp {
   _and: [todo_list_bool_exp!]
   _not: todo_list_bool_exp
   _or: [todo_list_bool_exp!]
+  id: oid_comparison_exp
   name: String_comparison_exp
 }
 
@@ -285,6 +300,7 @@ enum todo_list_constraint {
 input type for inserting data into table "todo_list"
 """
 input todo_list_insert_input {
+  id: oid
   name: String
 }
 
@@ -320,18 +336,22 @@ input todo_list_on_conflict {
 
 """Ordering options when selecting data from "todo_list"."""
 input todo_list_order_by {
+  id: order_by
   name: order_by
 }
 
 """primary key columns input for table: todo_list"""
 input todo_list_pk_columns_input {
-  name: String!
+  id: oid!
 }
 
 """
 select columns of table "todo_list"
 """
 enum todo_list_select_column {
+  """column name"""
+  id
+
   """column name"""
   name
 }
@@ -340,6 +360,7 @@ enum todo_list_select_column {
 input type for updating data in table "todo_list"
 """
 input todo_list_set_input {
+  id: oid
   name: String
 }
 
@@ -347,6 +368,9 @@ input todo_list_set_input {
 update columns of table "todo_list"
 """
 enum todo_list_update_column {
+  """column name"""
+  id
+
   """column name"""
   name
 }
