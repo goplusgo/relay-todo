@@ -152,6 +152,7 @@ const data = usePreloadedQuery(
   `,
   props.queryRef
 );
+```
 
 Then, run:
 ```
