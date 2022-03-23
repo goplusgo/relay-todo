@@ -14,6 +14,21 @@ directive @cached(
 ) on QUERY
 
 """
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
 input String_comparison_exp {
@@ -66,62 +81,363 @@ input String_comparison_exp {
   _similar: String
 }
 
+"""
+columns and relationships of "authors"
+"""
+type authors {
+  age: Int!
+  id: oid!
+  name: String!
+
+  """An array relationship"""
+  todos(
+    """distinct select on columns"""
+    distinct_on: [todos_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [todos_order_by!]
+
+    """filter the rows returned"""
+    where: todos_bool_exp
+  ): [todos!]!
+
+  """An aggregate relationship"""
+  todos_aggregate(
+    """distinct select on columns"""
+    distinct_on: [todos_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [todos_order_by!]
+
+    """filter the rows returned"""
+    where: todos_bool_exp
+  ): todos_aggregate!
+}
+
+"""
+aggregated selection of "authors"
+"""
+type authors_aggregate {
+  aggregate: authors_aggregate_fields
+  nodes: [authors!]!
+}
+
+"""
+aggregate fields of "authors"
+"""
+type authors_aggregate_fields {
+  avg: authors_avg_fields
+  count(columns: [authors_select_column!], distinct: Boolean): Int!
+  max: authors_max_fields
+  min: authors_min_fields
+  stddev: authors_stddev_fields
+  stddev_pop: authors_stddev_pop_fields
+  stddev_samp: authors_stddev_samp_fields
+  sum: authors_sum_fields
+  var_pop: authors_var_pop_fields
+  var_samp: authors_var_samp_fields
+  variance: authors_variance_fields
+}
+
+"""aggregate avg on columns"""
+type authors_avg_fields {
+  age: Float
+}
+
+"""
+Boolean expression to filter rows from the table "authors". All fields are combined with a logical 'AND'.
+"""
+input authors_bool_exp {
+  _and: [authors_bool_exp!]
+  _not: authors_bool_exp
+  _or: [authors_bool_exp!]
+  age: Int_comparison_exp
+  id: oid_comparison_exp
+  name: String_comparison_exp
+  todos: todos_bool_exp
+}
+
+"""
+unique or primary key constraints on table "authors"
+"""
+enum authors_constraint {
+  """unique or primary key constraint"""
+  authors_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "authors"
+"""
+input authors_inc_input {
+  age: Int
+}
+
+"""
+input type for inserting data into table "authors"
+"""
+input authors_insert_input {
+  age: Int
+  id: oid
+  name: String
+  todos: todos_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type authors_max_fields {
+  age: Int
+  name: String
+}
+
+"""aggregate min on columns"""
+type authors_min_fields {
+  age: Int
+  name: String
+}
+
+"""
+response of any mutation on the table "authors"
+"""
+type authors_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authors!]!
+}
+
+"""
+input type for inserting object relation for remote table "authors"
+"""
+input authors_obj_rel_insert_input {
+  data: authors_insert_input!
+
+  """upsert condition"""
+  on_conflict: authors_on_conflict
+}
+
+"""
+on_conflict condition type for table "authors"
+"""
+input authors_on_conflict {
+  constraint: authors_constraint!
+  update_columns: [authors_update_column!]! = []
+  where: authors_bool_exp
+}
+
+"""Ordering options when selecting data from "authors"."""
+input authors_order_by {
+  age: order_by
+  id: order_by
+  name: order_by
+  todos_aggregate: todos_aggregate_order_by
+}
+
+"""primary key columns input for table: authors"""
+input authors_pk_columns_input {
+  id: oid!
+}
+
+"""
+select columns of table "authors"
+"""
+enum authors_select_column {
+  """column name"""
+  age
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "authors"
+"""
+input authors_set_input {
+  age: Int
+  id: oid
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type authors_stddev_fields {
+  age: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type authors_stddev_pop_fields {
+  age: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type authors_stddev_samp_fields {
+  age: Float
+}
+
+"""aggregate sum on columns"""
+type authors_sum_fields {
+  age: Int
+}
+
+"""
+update columns of table "authors"
+"""
+enum authors_update_column {
+  """column name"""
+  age
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""aggregate var_pop on columns"""
+type authors_var_pop_fields {
+  age: Float
+}
+
+"""aggregate var_samp on columns"""
+type authors_var_samp_fields {
+  age: Float
+}
+
+"""aggregate variance on columns"""
+type authors_variance_fields {
+  age: Float
+}
+
 """mutation root"""
 type mutation_root {
   """
-  delete data from the table: "todo_list"
+  delete data from the table: "authors"
   """
-  delete_todo_list(
+  delete_authors(
     """filter the rows which have to be deleted"""
-    where: todo_list_bool_exp!
-  ): todo_list_mutation_response
+    where: authors_bool_exp!
+  ): authors_mutation_response
 
   """
-  delete single row from the table: "todo_list"
+  delete single row from the table: "authors"
   """
-  delete_todo_list_by_pk(id: oid!): todo_list
+  delete_authors_by_pk(id: oid!): authors
 
   """
-  insert data into the table: "todo_list"
+  delete data from the table: "todos"
   """
-  insert_todo_list(
+  delete_todos(
+    """filter the rows which have to be deleted"""
+    where: todos_bool_exp!
+  ): todos_mutation_response
+
+  """
+  delete single row from the table: "todos"
+  """
+  delete_todos_by_pk(id: uuid!): todos
+
+  """
+  insert data into the table: "authors"
+  """
+  insert_authors(
     """the rows to be inserted"""
-    objects: [todo_list_insert_input!]!
+    objects: [authors_insert_input!]!
 
     """upsert condition"""
-    on_conflict: todo_list_on_conflict
-  ): todo_list_mutation_response
+    on_conflict: authors_on_conflict
+  ): authors_mutation_response
 
   """
-  insert a single row into the table: "todo_list"
+  insert a single row into the table: "authors"
   """
-  insert_todo_list_one(
+  insert_authors_one(
     """the row to be inserted"""
-    object: todo_list_insert_input!
+    object: authors_insert_input!
 
     """upsert condition"""
-    on_conflict: todo_list_on_conflict
-  ): todo_list
+    on_conflict: authors_on_conflict
+  ): authors
 
   """
-  update data of the table: "todo_list"
+  insert data into the table: "todos"
   """
-  update_todo_list(
+  insert_todos(
+    """the rows to be inserted"""
+    objects: [todos_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: todos_on_conflict
+  ): todos_mutation_response
+
+  """
+  insert a single row into the table: "todos"
+  """
+  insert_todos_one(
+    """the row to be inserted"""
+    object: todos_insert_input!
+
+    """upsert condition"""
+    on_conflict: todos_on_conflict
+  ): todos
+
+  """
+  update data of the table: "authors"
+  """
+  update_authors(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: authors_inc_input
+
     """sets the columns of the filtered rows to the given values"""
-    _set: todo_list_set_input
+    _set: authors_set_input
 
     """filter the rows which have to be updated"""
-    where: todo_list_bool_exp!
-  ): todo_list_mutation_response
+    where: authors_bool_exp!
+  ): authors_mutation_response
 
   """
-  update single row of the table: "todo_list"
+  update single row of the table: "authors"
   """
-  update_todo_list_by_pk(
+  update_authors_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: authors_inc_input
+
     """sets the columns of the filtered rows to the given values"""
-    _set: todo_list_set_input
-    pk_columns: todo_list_pk_columns_input!
-  ): todo_list
+    _set: authors_set_input
+    pk_columns: authors_pk_columns_input!
+  ): authors
+
+  """
+  update data of the table: "todos"
+  """
+  update_todos(
+    """sets the columns of the filtered rows to the given values"""
+    _set: todos_set_input
+
+    """filter the rows which have to be updated"""
+    where: todos_bool_exp!
+  ): todos_mutation_response
+
+  """
+  update single row of the table: "todos"
+  """
+  update_todos_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: todos_set_input
+    pk_columns: todos_pk_columns_input!
+  ): todos
 }
 
 scalar oid
@@ -164,11 +480,11 @@ enum order_by {
 
 type query_root {
   """
-  fetch data from the table: "todo_list"
+  fetch data from the table: "authors"
   """
-  todo_list(
+  authors(
     """distinct select on columns"""
-    distinct_on: [todo_list_select_column!]
+    distinct_on: [authors_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -177,18 +493,18 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [todo_list_order_by!]
+    order_by: [authors_order_by!]
 
     """filter the rows returned"""
-    where: todo_list_bool_exp
-  ): [todo_list!]!
+    where: authors_bool_exp
+  ): [authors!]!
 
   """
-  fetch aggregated fields from the table: "todo_list"
+  fetch aggregated fields from the table: "authors"
   """
-  todo_list_aggregate(
+  authors_aggregate(
     """distinct select on columns"""
-    distinct_on: [todo_list_select_column!]
+    distinct_on: [authors_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -197,23 +513,62 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [todo_list_order_by!]
+    order_by: [authors_order_by!]
 
     """filter the rows returned"""
-    where: todo_list_bool_exp
-  ): todo_list_aggregate!
+    where: authors_bool_exp
+  ): authors_aggregate!
 
-  """fetch data from the table: "todo_list" using primary key columns"""
-  todo_list_by_pk(id: oid!): todo_list
+  """fetch data from the table: "authors" using primary key columns"""
+  authors_by_pk(id: oid!): authors
+
+  """An array relationship"""
+  todos(
+    """distinct select on columns"""
+    distinct_on: [todos_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [todos_order_by!]
+
+    """filter the rows returned"""
+    where: todos_bool_exp
+  ): [todos!]!
+
+  """An aggregate relationship"""
+  todos_aggregate(
+    """distinct select on columns"""
+    distinct_on: [todos_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [todos_order_by!]
+
+    """filter the rows returned"""
+    where: todos_bool_exp
+  ): todos_aggregate!
+
+  """fetch data from the table: "todos" using primary key columns"""
+  todos_by_pk(id: uuid!): todos
 }
 
 type subscription_root {
   """
-  fetch data from the table: "todo_list"
+  fetch data from the table: "authors"
   """
-  todo_list(
+  authors(
     """distinct select on columns"""
-    distinct_on: [todo_list_select_column!]
+    distinct_on: [authors_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -222,18 +577,18 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [todo_list_order_by!]
+    order_by: [authors_order_by!]
 
     """filter the rows returned"""
-    where: todo_list_bool_exp
-  ): [todo_list!]!
+    where: authors_bool_exp
+  ): [authors!]!
 
   """
-  fetch aggregated fields from the table: "todo_list"
+  fetch aggregated fields from the table: "authors"
   """
-  todo_list_aggregate(
+  authors_aggregate(
     """distinct select on columns"""
-    distinct_on: [todo_list_select_column!]
+    distinct_on: [authors_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -242,136 +597,245 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [todo_list_order_by!]
+    order_by: [authors_order_by!]
 
     """filter the rows returned"""
-    where: todo_list_bool_exp
-  ): todo_list_aggregate!
+    where: authors_bool_exp
+  ): authors_aggregate!
 
-  """fetch data from the table: "todo_list" using primary key columns"""
-  todo_list_by_pk(id: oid!): todo_list
+  """fetch data from the table: "authors" using primary key columns"""
+  authors_by_pk(id: oid!): authors
+
+  """An array relationship"""
+  todos(
+    """distinct select on columns"""
+    distinct_on: [todos_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [todos_order_by!]
+
+    """filter the rows returned"""
+    where: todos_bool_exp
+  ): [todos!]!
+
+  """An aggregate relationship"""
+  todos_aggregate(
+    """distinct select on columns"""
+    distinct_on: [todos_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [todos_order_by!]
+
+    """filter the rows returned"""
+    where: todos_bool_exp
+  ): todos_aggregate!
+
+  """fetch data from the table: "todos" using primary key columns"""
+  todos_by_pk(id: uuid!): todos
 }
 
 """
-columns and relationships of "todo_list"
+columns and relationships of "todos"
 """
-type todo_list {
-  id: oid!
-  name: String!
+type todos {
+  """An object relationship"""
+  author: authors!
+  author_id: oid!
+  id: uuid!
+  title: String!
 }
 
 """
-aggregated selection of "todo_list"
+aggregated selection of "todos"
 """
-type todo_list_aggregate {
-  aggregate: todo_list_aggregate_fields
-  nodes: [todo_list!]!
+type todos_aggregate {
+  aggregate: todos_aggregate_fields
+  nodes: [todos!]!
 }
 
 """
-aggregate fields of "todo_list"
+aggregate fields of "todos"
 """
-type todo_list_aggregate_fields {
-  count(columns: [todo_list_select_column!], distinct: Boolean): Int!
-  max: todo_list_max_fields
-  min: todo_list_min_fields
+type todos_aggregate_fields {
+  count(columns: [todos_select_column!], distinct: Boolean): Int!
+  max: todos_max_fields
+  min: todos_min_fields
 }
 
 """
-Boolean expression to filter rows from the table "todo_list". All fields are combined with a logical 'AND'.
+order by aggregate values of table "todos"
 """
-input todo_list_bool_exp {
-  _and: [todo_list_bool_exp!]
-  _not: todo_list_bool_exp
-  _or: [todo_list_bool_exp!]
-  id: oid_comparison_exp
-  name: String_comparison_exp
+input todos_aggregate_order_by {
+  count: order_by
+  max: todos_max_order_by
+  min: todos_min_order_by
 }
 
 """
-unique or primary key constraints on table "todo_list"
+input type for inserting array relation for remote table "todos"
 """
-enum todo_list_constraint {
+input todos_arr_rel_insert_input {
+  data: [todos_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: todos_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "todos". All fields are combined with a logical 'AND'.
+"""
+input todos_bool_exp {
+  _and: [todos_bool_exp!]
+  _not: todos_bool_exp
+  _or: [todos_bool_exp!]
+  author: authors_bool_exp
+  author_id: oid_comparison_exp
+  id: uuid_comparison_exp
+  title: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "todos"
+"""
+enum todos_constraint {
   """unique or primary key constraint"""
-  todo_list_pkey
+  todos_pkey
 }
 
 """
-input type for inserting data into table "todo_list"
+input type for inserting data into table "todos"
 """
-input todo_list_insert_input {
-  id: oid
-  name: String
+input todos_insert_input {
+  author: authors_obj_rel_insert_input
+  author_id: oid
+  id: uuid
+  title: String
 }
 
 """aggregate max on columns"""
-type todo_list_max_fields {
-  name: String
+type todos_max_fields {
+  id: uuid
+  title: String
+}
+
+"""
+order by max() on columns of table "todos"
+"""
+input todos_max_order_by {
+  id: order_by
+  title: order_by
 }
 
 """aggregate min on columns"""
-type todo_list_min_fields {
-  name: String
+type todos_min_fields {
+  id: uuid
+  title: String
 }
 
 """
-response of any mutation on the table "todo_list"
+order by min() on columns of table "todos"
 """
-type todo_list_mutation_response {
+input todos_min_order_by {
+  id: order_by
+  title: order_by
+}
+
+"""
+response of any mutation on the table "todos"
+"""
+type todos_mutation_response {
   """number of rows affected by the mutation"""
   affected_rows: Int!
 
   """data from the rows affected by the mutation"""
-  returning: [todo_list!]!
+  returning: [todos!]!
 }
 
 """
-on_conflict condition type for table "todo_list"
+on_conflict condition type for table "todos"
 """
-input todo_list_on_conflict {
-  constraint: todo_list_constraint!
-  update_columns: [todo_list_update_column!]! = []
-  where: todo_list_bool_exp
+input todos_on_conflict {
+  constraint: todos_constraint!
+  update_columns: [todos_update_column!]! = []
+  where: todos_bool_exp
 }
 
-"""Ordering options when selecting data from "todo_list"."""
-input todo_list_order_by {
+"""Ordering options when selecting data from "todos"."""
+input todos_order_by {
+  author: authors_order_by
+  author_id: order_by
   id: order_by
-  name: order_by
+  title: order_by
 }
 
-"""primary key columns input for table: todo_list"""
-input todo_list_pk_columns_input {
-  id: oid!
+"""primary key columns input for table: todos"""
+input todos_pk_columns_input {
+  id: uuid!
 }
 
 """
-select columns of table "todo_list"
+select columns of table "todos"
 """
-enum todo_list_select_column {
+enum todos_select_column {
+  """column name"""
+  author_id
+
   """column name"""
   id
 
   """column name"""
-  name
+  title
 }
 
 """
-input type for updating data in table "todo_list"
+input type for updating data in table "todos"
 """
-input todo_list_set_input {
-  id: oid
-  name: String
+input todos_set_input {
+  author_id: oid
+  id: uuid
+  title: String
 }
 
 """
-update columns of table "todo_list"
+update columns of table "todos"
 """
-enum todo_list_update_column {
+enum todos_update_column {
+  """column name"""
+  author_id
+
   """column name"""
   id
 
   """column name"""
-  name
+  title
+}
+
+scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
 }
 

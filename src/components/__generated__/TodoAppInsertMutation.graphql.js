@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d4bf54d699c758562987f4e5e40effb5>>
+ * @generated SignedSource<<8081267b89d3364bed3b24832f126954>>
  * @flow
  * @lightSyntaxTransform
  * @nogrep
@@ -12,12 +12,14 @@
 /*::
 import type { ConcreteRequest, Mutation } from 'relay-runtime';
 export type TodoAppInsertMutation$variables = {|
-  name: string,
+  title: string,
+  author_id: any,
 |};
 export type TodoAppInsertMutation$data = {|
-  +insert_todo_list_one: ?{|
+  +insert_todos_one: ?{|
     +id: any,
-    +name: string,
+    +title: string,
+    +author_id: any,
   |},
 |};
 export type TodoAppInsertMutation = {|
@@ -27,14 +29,17 @@ export type TodoAppInsertMutation = {|
 */
 
 var node/*: ConcreteRequest*/ = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "name"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "author_id"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "title"
+},
+v2 = [
   {
     "alias": null,
     "args": [
@@ -42,17 +47,22 @@ v1 = [
         "fields": [
           {
             "kind": "Variable",
-            "name": "name",
-            "variableName": "name"
+            "name": "author_id",
+            "variableName": "author_id"
+          },
+          {
+            "kind": "Variable",
+            "name": "title",
+            "variableName": "title"
           }
         ],
         "kind": "ObjectValue",
         "name": "object"
       }
     ],
-    "concreteType": "todo_list",
+    "concreteType": "todos",
     "kind": "LinkedField",
-    "name": "insert_todo_list_one",
+    "name": "insert_todos_one",
     "plural": false,
     "selections": [
       {
@@ -66,7 +76,14 @@ v1 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "name",
+        "name": "title",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "author_id",
         "storageKey": null
       }
     ],
@@ -75,33 +92,39 @@ v1 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "TodoAppInsertMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "TodoAppInsertMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "7c9d48970f97a92dfc8b50443c7429b6",
+    "cacheID": "e9e71340595cb3bf72cd1b2291cac1b6",
     "id": null,
     "metadata": {},
     "name": "TodoAppInsertMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoAppInsertMutation(\n  $name: String!\n) {\n  insert_todo_list_one(object: {name: $name}) {\n    id\n    name\n  }\n}\n"
+    "text": "mutation TodoAppInsertMutation(\n  $title: String!\n  $author_id: oid!\n) {\n  insert_todos_one(object: {author_id: $author_id, title: $title}) {\n    id\n    title\n    author_id\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "492730895236af0389a3edde57cbee77";
+(node/*: any*/).hash = "65e4ea13f3fd451ef787da9a77a6ba48";
 
 module.exports = ((node/*: any*/)/*: Mutation<
   TodoAppInsertMutation$variables,

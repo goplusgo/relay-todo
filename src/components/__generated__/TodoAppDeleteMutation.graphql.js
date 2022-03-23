@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<86a2b7f27436c9a4569f9fe00fdae6ad>>
+ * @generated SignedSource<<29acece0a32e9b5f1a9541a693a168c8>>
  * @flow
  * @lightSyntaxTransform
  * @nogrep
@@ -15,9 +15,10 @@ export type TodoAppDeleteMutation$variables = {|
   id: any,
 |};
 export type TodoAppDeleteMutation$data = {|
-  +delete_todo_list_by_pk: ?{|
+  +delete_todos_by_pk: ?{|
     +id: any,
-    +name: string,
+    +title: string,
+    +author_id: any,
   |},
 |};
 export type TodoAppDeleteMutation = {|
@@ -44,9 +45,9 @@ v1 = [
         "variableName": "id"
       }
     ],
-    "concreteType": "todo_list",
+    "concreteType": "todos",
     "kind": "LinkedField",
-    "name": "delete_todo_list_by_pk",
+    "name": "delete_todos_by_pk",
     "plural": false,
     "selections": [
       {
@@ -60,7 +61,14 @@ v1 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "name",
+        "name": "title",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "author_id",
         "storageKey": null
       }
     ],
@@ -85,17 +93,17 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "b27a8ce47e5035bdf98fd0893c7510f4",
+    "cacheID": "21d3c570b95b9db01fb25f10b217dbf2",
     "id": null,
     "metadata": {},
     "name": "TodoAppDeleteMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoAppDeleteMutation(\n  $id: oid!\n) {\n  delete_todo_list_by_pk(id: $id) {\n    id\n    name\n  }\n}\n"
+    "text": "mutation TodoAppDeleteMutation(\n  $id: uuid!\n) {\n  delete_todos_by_pk(id: $id) {\n    id\n    title\n    author_id\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "77400006b8433d4582be68852fd48777";
+(node/*: any*/).hash = "26a3870608a5c43f46cc7fcf43746028";
 
 module.exports = ((node/*: any*/)/*: Mutation<
   TodoAppDeleteMutation$variables,
