@@ -1,8 +1,3 @@
-/**
- * @flow strict-local
- * @returns
- */
-
 import type { PreloadedQuery } from 'react-relay/relay-hooks/EntryPointTypes.flow';
 import type { TodoListQuery as TodoListQueryType } from './__generated__/TodoListQuery.graphql';
 
@@ -51,6 +46,14 @@ export default function TodoList(props: Props): React$MixedElement {
       onClick={() => {
         commitDelete({
           variables: { id: todo.id },
+          updater: (store) => {
+            const authorRecord = store.get('1');
+            const todos = authorRecord.getLinkedRecords('todos');
+            authorRecord.setLinkedRecords(
+              todos.filter((todoRecord) => todoRecord.getDataID() !== todo.id),
+              'todos',
+            );
+          },
         });
       }}>
       {todo.title}
