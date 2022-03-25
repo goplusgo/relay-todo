@@ -3,23 +3,49 @@
  * @returns
  */
 
-import { TodoContext } from './TodoApp.react';
+import type { PreloadedQuery } from 'react-relay/relay-hooks/EntryPointTypes.flow';
+import type { TodoListQuery as TodoListQueryType } from './__generated__/TodoListQuery.graphql';
 
 import React from 'react';
-import { useContext } from 'react';
+import graphql from 'babel-plugin-relay/macro';
+import { useMutation, usePreloadedQuery } from 'react-relay/hooks';
 
 type Props = {
-  todoList: $ReadOnlyArray<{|
-    +id: any,
-    +title: string,
-    +author_id: any,
-  |}>,
+  queryRef: PreloadedQuery<TodoListQueryType>,
 };
 
 export default function TodoList(props: Props): React$MixedElement {
-  const { commitDelete } = useContext(TodoContext);
+  const data = usePreloadedQuery(
+    graphql`
+      query TodoListQuery($id: oid!) {
+        authors_by_pk(id: $id) {
+          id
+          name
+          age
+          todos {
+            id
+            title
+            author_id
+          }
+        }
+      }
+    `,
+    props.queryRef,
+  );
 
-  const listItems = props.todoList.map((todo) => (
+  const [commitDelete] = useMutation(
+    graphql`
+      mutation TodoListDeleteMutation($id: uuid!) {
+        delete_todos_by_pk(id: $id) {
+          id
+          title
+          author_id
+        }
+      }
+    `,
+  );
+
+  const listItems = data.authors_by_pk?.todos.map((todo) => (
     <li
       key={todo.id}
       onClick={() => {

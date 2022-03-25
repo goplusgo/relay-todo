@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8081267b89d3364bed3b24832f126954>>
+ * @generated SignedSource<<275d564a324a3cccbd30e8e5f38f228c>>
  * @flow
  * @lightSyntaxTransform
  * @nogrep
@@ -11,20 +11,20 @@
 
 /*::
 import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type TodoAppInsertMutation$variables = {|
+export type TodoInputInsertMutation$variables = {|
   title: string,
   author_id: any,
 |};
-export type TodoAppInsertMutation$data = {|
+export type TodoInputInsertMutation$data = {|
   +insert_todos_one: ?{|
     +id: any,
     +title: string,
     +author_id: any,
   |},
 |};
-export type TodoAppInsertMutation = {|
-  variables: TodoAppInsertMutation$variables,
-  response: TodoAppInsertMutation$data,
+export type TodoInputInsertMutation = {|
+  variables: TodoInputInsertMutation$variables,
+  response: TodoInputInsertMutation$data,
 |};
 */
 
@@ -98,7 +98,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "TodoAppInsertMutation",
+    "name": "TodoInputInsertMutation",
     "selections": (v2/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
@@ -110,23 +110,23 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "TodoAppInsertMutation",
+    "name": "TodoInputInsertMutation",
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "e9e71340595cb3bf72cd1b2291cac1b6",
+    "cacheID": "55520f444a76d9cf33293cf2e4f83fe6",
     "id": null,
     "metadata": {},
-    "name": "TodoAppInsertMutation",
+    "name": "TodoInputInsertMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoAppInsertMutation(\n  $title: String!\n  $author_id: oid!\n) {\n  insert_todos_one(object: {author_id: $author_id, title: $title}) {\n    id\n    title\n    author_id\n  }\n}\n"
+    "text": "mutation TodoInputInsertMutation(\n  $title: String!\n  $author_id: oid!\n) {\n  insert_todos_one(object: {author_id: $author_id, title: $title}) {\n    id\n    title\n    author_id\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "65e4ea13f3fd451ef787da9a77a6ba48";
+(node/*: any*/).hash = "2287e91751e09ce7453df8d7349937f0";
 
 module.exports = ((node/*: any*/)/*: Mutation<
-  TodoAppInsertMutation$variables,
-  TodoAppInsertMutation$data,
+  TodoInputInsertMutation$variables,
+  TodoInputInsertMutation$data,
 >*/);

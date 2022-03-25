@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a4dae748f3c6770b5b3f144619106153>>
+ * @generated SignedSource<<05d47342ed6d867a53f1f015c4234237>>
  * @flow
  * @lightSyntaxTransform
  * @nogrep
@@ -11,10 +11,10 @@
 
 /*::
 import type { ConcreteRequest, Query } from 'relay-runtime';
-export type TodoAppQuery$variables = {|
+export type TodoListQuery$variables = {|
   id: any,
 |};
-export type TodoAppQuery$data = {|
+export type TodoListQuery$data = {|
   +authors_by_pk: ?{|
     +id: any,
     +name: string,
@@ -26,9 +26,9 @@ export type TodoAppQuery$data = {|
     |}>,
   |},
 |};
-export type TodoAppQuery = {|
-  variables: TodoAppQuery$variables,
-  response: TodoAppQuery$data,
+export type TodoListQuery = {|
+  variables: TodoListQuery$variables,
+  response: TodoListQuery$data,
 |};
 */
 
@@ -112,7 +112,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "TodoAppQuery",
+    "name": "TodoListQuery",
     "selections": (v2/*: any*/),
     "type": "query_root",
     "abstractKey": null
@@ -121,23 +121,23 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "TodoAppQuery",
+    "name": "TodoListQuery",
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "d23a99500f304fe9b46b448210d849db",
+    "cacheID": "8e275b7e951c16ce5d4d25e27db83699",
     "id": null,
     "metadata": {},
-    "name": "TodoAppQuery",
+    "name": "TodoListQuery",
     "operationKind": "query",
-    "text": "query TodoAppQuery(\n  $id: oid!\n) {\n  authors_by_pk(id: $id) {\n    id\n    name\n    age\n    todos {\n      id\n      title\n      author_id\n    }\n  }\n}\n"
+    "text": "query TodoListQuery(\n  $id: oid!\n) {\n  authors_by_pk(id: $id) {\n    id\n    name\n    age\n    todos {\n      id\n      title\n      author_id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "05ac13ce342e881df9ad434795a726db";
+(node/*: any*/).hash = "0801ac8f64cfbb5a35a556fd324d768d";
 
 module.exports = ((node/*: any*/)/*: Query<
-  TodoAppQuery$variables,
-  TodoAppQuery$data,
+  TodoListQuery$variables,
+  TodoListQuery$data,
 >*/);

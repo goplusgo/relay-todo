@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<29acece0a32e9b5f1a9541a693a168c8>>
+ * @generated SignedSource<<24a6006313e7d921a9403ab9a750c451>>
  * @flow
  * @lightSyntaxTransform
  * @nogrep
@@ -11,19 +11,19 @@
 
 /*::
 import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type TodoAppDeleteMutation$variables = {|
+export type TodoListDeleteMutation$variables = {|
   id: any,
 |};
-export type TodoAppDeleteMutation$data = {|
+export type TodoListDeleteMutation$data = {|
   +delete_todos_by_pk: ?{|
     +id: any,
     +title: string,
     +author_id: any,
   |},
 |};
-export type TodoAppDeleteMutation = {|
-  variables: TodoAppDeleteMutation$variables,
-  response: TodoAppDeleteMutation$data,
+export type TodoListDeleteMutation = {|
+  variables: TodoListDeleteMutation$variables,
+  response: TodoListDeleteMutation$data,
 |};
 */
 
@@ -80,7 +80,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "TodoAppDeleteMutation",
+    "name": "TodoListDeleteMutation",
     "selections": (v1/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
@@ -89,23 +89,23 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "TodoAppDeleteMutation",
+    "name": "TodoListDeleteMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "21d3c570b95b9db01fb25f10b217dbf2",
+    "cacheID": "d2ad0bcf1d65752c43d0670ea9f2e97f",
     "id": null,
     "metadata": {},
-    "name": "TodoAppDeleteMutation",
+    "name": "TodoListDeleteMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoAppDeleteMutation(\n  $id: uuid!\n) {\n  delete_todos_by_pk(id: $id) {\n    id\n    title\n    author_id\n  }\n}\n"
+    "text": "mutation TodoListDeleteMutation(\n  $id: uuid!\n) {\n  delete_todos_by_pk(id: $id) {\n    id\n    title\n    author_id\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "26a3870608a5c43f46cc7fcf43746028";
+(node/*: any*/).hash = "05a415ece4b8630ed11ba80daa8fbf6c";
 
 module.exports = ((node/*: any*/)/*: Mutation<
-  TodoAppDeleteMutation$variables,
-  TodoAppDeleteMutation$data,
+  TodoListDeleteMutation$variables,
+  TodoListDeleteMutation$data,
 >*/);
