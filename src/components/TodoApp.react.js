@@ -1,44 +1,38 @@
 import React from 'react';
+import TodoHeader from './TodoHeader.react';
 import TodoInput from './TodoInput.react';
 import TodoList from './TodoList.react';
-import type { PreloadedQuery } from 'react-relay/relay-hooks/EntryPointTypes.flow';
-import type { TodoListQuery as TodoListQueryType } from './__generated__/TodoListQuery.graphql';
 import graphql from 'babel-plugin-relay/macro';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import * as TodoListQuery from './__generated__/TodoListQuery.graphql';
+
+import * as TodoAppQuery from './__generated__/TodoAppQuery.graphql';
 
 import RelayEnvironment from '../RelayEnvironment';
-import {
-  RelayEnvironmentProvider,
-  loadQuery,
-  useMutation,
-  usePreloadedQuery,
-} from 'react-relay/hooks';
+import { loadQuery, usePreloadedQuery } from 'react-relay/hooks';
 
-function ErrorFallback({ error, resetErrorBoundary }) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  );
-}
-
-const preloadedQuery = loadQuery(RelayEnvironment, TodoListQuery.default, {
+const preloadedQuery = loadQuery(RelayEnvironment, TodoAppQuery.default, {
   id: '1',
 });
 
 export default function TodoApp(props: Props): React$MixedElement {
+  const data = usePreloadedQuery(
+    graphql`
+      query TodoAppQuery($id: oid!) {
+        authors_by_pk(id: $id) {
+          id
+          name
+          age
+          ...TodoList_authors
+        }
+      }
+    `,
+    preloadedQuery,
+  );
+
   return (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Suspense fallback={'Loading...'}>
-          <TodoInput />
-          <TodoList queryRef={preloadedQuery} />
-        </Suspense>
-      </ErrorBoundary>
-    </RelayEnvironmentProvider>
+    <>
+      <TodoHeader userName={data.authors_by_pk.name} />
+      <TodoInput />
+      <TodoList authors={data.authors_by_pk} />
+    </>
   );
 }
